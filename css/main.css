@@ -1,0 +1,86 @@
+:root {
+  --margin: 3px;
+  --size: 50px;
+}
+
+body {
+  padding: 50px;
+  font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.key-base {
+  /* position: absolute; */
+  background-color: rgb(216, 216, 216);
+  text-align: center;
+  z-index: initial;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(185, 185, 185);
+  border-image: initial;
+  border-radius: 6%;
+  padding: 0px;
+  margin: var(--margin);
+  width: var(--size);
+  height: var(--size);
+  transition: box-shadow 0.2s ease 0s, opacity 0.2s ease 0s;
+}
+
+.key-base:hover {
+  z-index: 2;
+  box-shadow: rgba(0, 191, 255, 0.5) 0px 0px 0px 4px;
+}
+
+.key-inside {
+  background-image: inherit;
+  background-color: rgb(252, 252, 252);
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  position: relative;
+  width: 90%;
+  height: 80%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.3);
+  border-image: initial;
+  border-radius: 3px;
+  margin: 3.6% 3.6% 11%;
+}
+
+.key-text {
+  font-size: 125%;
+  opacity: 1;
+  word-break: break-word;
+}
+
+.key-100 {
+  width: calc(var(--size) * 1);
+}
+
+.key-125 {
+  width: calc(var(--size) * 1.25);
+}
+
+.key-150 {
+  width: calc(var(--size) * 1.5);
+}
+
+.key-175 {
+  width: calc(var(--size) * 1.75);
+}
+
+.key-200 {
+  width: calc(var(--size) * 2);
+}
+
+.key-225 {
+  width: calc(var(--size) * 2.25);
+}
+
+.key-275 {
+  width: calc(var(--size) * 2.75);
+}
