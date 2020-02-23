@@ -1,8 +1,24 @@
+const keyboardWidth = 1200;
+const halfKeyboardWidth = keyboardWidth / 2;
+const keyboardHeight = 480;
+const keyWidth = 50;
+const keyHeight = 50;
+const rowGap = 8;
+const columnGap = 5;
+const maxColumn = 10;
+const margin = 15;
+
 /**
  * Generate the key element
  * @param {Object} opt
- * @param {number} opt.size Size of key on keyboard
+ * @param {number} opt.hand Hand: 0 is left, other is right
+ * @param {number} opt.size Size of key
  * @param {string} opt.key Text of key
+ * @param {string} opt.key2 Text of key2(shift-key)
+ * @param {number} opt.row Row of key
+ * @param {number} opt.col Column of key
+ * @param {number} opt.idx Column Index of key
+ * @param {number} opt.rotate Rotate of key
  * <div class="key-base key-125">
         <div class="key-inside">
             <div class="key-text">~</div>
@@ -12,53 +28,100 @@
  */
 function genKey(opt) {
     opt = opt || {};
-    let size = opt.size !== undefined ? opt.size : 1;
-    let key = opt.key !== undefined ? opt.key : 'null';
-    console.log('generate ', key, size);
+    opt.hand = opt.hand !== undefined ? opt.hand : 0;
+    opt.size = opt.size !== undefined ? opt.size : 1;
+    opt.key = opt.key !== undefined ? opt.key : 'null';
+    opt.key2 = opt.key2 !== undefined ? opt.key2 : undefined;
+    opt.row = opt.row !== undefined ? opt.row : 1;
+    opt.col = opt.col !== undefined ? opt.col : 1;
+    opt.idx = opt.idx !== undefined ? opt.idx : 0;
+    console.log(opt);
 
     let root = document.createElement('div');
     root.classList.add('key-base');
-    let sizeName = size * 100;
-    root.classList.add(`key-${sizeName}`);
+    let size = opt.size * 100;
+    root.classList.add(`key-${size}`);
 
     let inside = document.createElement('div');
     inside.classList.add('key-inside');
 
     let text = document.createElement('div');
     text.classList.add('key-text');
-    text.textContent = key;
+    text.innerHTML = opt.key2 === undefined ?
+        opt.key :
+        opt.key + '<br/>' + opt.key2;
+
+    let textRotate = opt.rotate == 0 ? 0 : opt.rotate * -1;
+    text.style.transform = `rotate(${textRotate}deg)`;
 
     inside.appendChild(text);
     root.appendChild(inside);
+
+    // setting key position by row and column
+    let baseTop = 0;
+    let baseLeft = 0;
+    if (opt.hand == 0) {
+        baseTop = 10;
+        baseLeft = margin;
+
+        let top = (baseTop
+            + opt.row * (keyHeight + rowGap)
+        );
+        root.style.top = `${top}px`;
+
+        let left = baseLeft
+            + opt.idx * keyWidth
+            + opt.col * columnGap;
+        root.style.left = `${left}px`;
+    } else {
+        baseTop = 10;
+        baseLeft = halfKeyboardWidth
+            - ((maxColumn * keyWidth) +
+                ((maxColumn - 2) * columnGap) +
+                margin);
+
+        let top = (baseTop
+            + opt.row * (keyHeight + rowGap)
+        );
+        root.style.top = `${top}px`;
+
+        let left = baseLeft
+            + opt.idx * keyWidth
+            + opt.col * columnGap;
+        root.style.left = `${left}px`;
+    }
+
+    root.style.transform = `rotate(${opt.rotate}deg)`;
+    root.style.transformOrigin = 'left bottom';
+    root.dataset.hand = opt.hand;
     return root;
 }
 
 docReady(function () {
-    let keys = [
-        { size: 1, key: '`' },
-        { size: 1, key: 1 },
-        { size: 1, key: 2 },
-        { size: 1, key: 3 },
-        { size: 1, key: 4 },
-        { size: 1, key: 5 },
-        { size: 1, key: 6 },
-        { size: 1, key: 7 },
-        { size: 1, key: 8 },
-        { size: 1, key: 9 },
-        { size: 1, key: 0 },
-        { size: 1, key: '-' },
-        { size: 1, key: '\'' },
-        { size: 2, key: '\u232b' },
-    ];
-
     let layout = document.getElementById('layout');
+    layout.style.width = `${keyboardWidth}px`;
+    layout.style.height = `${keyboardHeight}px`;
+    let left = document.getElementById('left');
+    left.style.width = `${halfKeyboardWidth - 2}px`;
+    left.style.height = `${keyboardHeight - 2}px`;
+    let right = document.getElementById('right');
+    right.style.width = `${halfKeyboardWidth - 2}px`;
+    right.style.height = `${keyboardHeight - 2}px`;
+    right.style.left = `${halfKeyboardWidth}px`;
 
     let keyElements = {};
-    keys.forEach((x, index) => {
+    AllKeys.forEach((x, index) => {
         keyElements[index] = genKey(x);
     })
 
     Object.keys(keyElements).forEach(x => {
-        layout.appendChild(keyElements[x]);
+        /** @type {HTMLDivElement} */
+        let key = keyElements[x];
+        if (key.dataset.hand == 0) {
+            left.appendChild(key);
+        }
+        else {
+            right.appendChild(key);
+        }
     });
 });

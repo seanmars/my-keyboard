@@ -1,15 +1,32 @@
 :root {
-  --margin: 3px;
+  --margin: 0px;
   --size: 50px;
 }
 
 body {
   padding: 50px;
-  font: 1em Helvetica Neue, Helvetica, Arial, sans-serif;
+  font: 0.75em Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+.keyboardLayout {
+  position: relative;
+  display: block;
+  border: 1px solid rgb(127, 197, 255);
+  margin: 0 auto;
+}
+
+.keyboardLayout #left {
+  position: absolute;
+  /* border: 1px solid rgb(255, 127, 127); */
+}
+
+.keyboardLayout #right {
+  position: absolute;
+  /* border: 1px solid rgb(255, 127, 127); */
 }
 
 .key-base {
-  /* position: absolute; */
+  position: absolute;
   background-color: rgb(216, 216, 216);
   text-align: center;
   z-index: initial;
@@ -26,6 +43,7 @@ body {
 }
 
 .key-base:hover {
+  position: absolute;
   z-index: 2;
   box-shadow: rgba(0, 191, 255, 0.5) 0px 0px 0px 4px;
 }
