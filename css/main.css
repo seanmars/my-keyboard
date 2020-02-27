@@ -8,11 +8,25 @@ body {
   font: 0.75em Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
+.center {
+  margin: 0 auto;
+}
+
+.keyboardLayer {
+  position: relative;
+  display: block;
+  height: 1.5em;
+}
+
+.keyboardLayer #layer {
+  position: absolute;
+  right: 0px;
+}
+
 .keyboardLayout {
   position: relative;
   display: block;
   border: 1px solid rgb(127, 197, 255);
-  margin: 0 auto;
 }
 
 .keyboardLayout #left {

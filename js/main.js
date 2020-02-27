@@ -97,20 +97,18 @@ function genKey(opt) {
     return root;
 }
 
-docReady(function () {
-    let layout = document.getElementById('layout');
-    layout.style.width = `${keyboardWidth}px`;
-    layout.style.height = `${keyboardHeight}px`;
-    let left = document.getElementById('left');
-    left.style.width = `${halfKeyboardWidth - 2}px`;
-    left.style.height = `${keyboardHeight - 2}px`;
-    let right = document.getElementById('right');
-    right.style.width = `${halfKeyboardWidth - 2}px`;
-    right.style.height = `${keyboardHeight - 2}px`;
-    right.style.left = `${halfKeyboardWidth}px`;
+/**
+ *
+ * @param {HTMLElement} left
+ * @param {HTMLElement} right
+ * @param {Array} keys
+ */
+function generateAllKeys(left, right, keys) {
+    left.innerHTML = '';
+    right.innerHTML = '';
 
     let keyElements = {};
-    AllKeys.forEach((x, index) => {
+    keys.forEach((x, index) => {
         keyElements[index] = genKey(x);
     })
 
@@ -124,4 +122,40 @@ docReady(function () {
             right.appendChild(key);
         }
     });
+}
+
+docReady(function () {
+    let layoutDiv = document.getElementById('layoutDiv');
+    layoutDiv.style.width = `${keyboardWidth}px`;
+    layoutDiv.style.height = `${keyboardHeight}px`;
+    let left = document.getElementById('left');
+    left.style.width = `${halfKeyboardWidth - 2}px`;
+    left.style.height = `${keyboardHeight - 2}px`;
+    let right = document.getElementById('right');
+    right.style.width = `${halfKeyboardWidth - 2}px`;
+    right.style.height = `${keyboardHeight - 2}px`;
+    right.style.left = `${halfKeyboardWidth}px`;
+
+    let layerDiv = document.getElementById('layerDiv');
+    layerDiv.style.width = `${keyboardWidth}px`;
+
+    /** @type {HTMLSelectElement} */
+    let layerSelector = document.getElementById('layer');
+    layerSelector.addEventListener('change', (ev) => {
+        /** @type {HTMLSelectElement} */
+        let l = ev.target;
+        let idx = parseInt(l.options[l.selectedIndex].value);
+        generateAllKeys(left, right, AllKeys[idx]);
+    });
+
+    AllKeys.forEach((x, index) => {
+        var option = document.createElement('option');
+        option.value = index;
+        option.text = `Layer ${index}`;
+        option.selected = index == 0;
+        layerSelector.appendChild(option);
+    });
+
+    var selectedIndex = parseInt(layerSelector.options[layerSelector.selectedIndex].value);
+    generateAllKeys(left, right, AllKeys[selectedIndex]);
 });
